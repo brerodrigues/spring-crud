@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class PessoaResource {
 
     @ApiOperation("Cadastra pessoas, uma por vez.")
     @PostMapping
-    public ResponseEntity<Pessoa> save(@RequestBody Pessoa pessoa) {
+    public ResponseEntity<Pessoa> save(@Validated @RequestBody Pessoa pessoa) {
         pessoaRepository.save(pessoa);
         return ResponseEntity.ok(pessoa);
     }
@@ -59,7 +60,7 @@ public class PessoaResource {
 
     @ApiOperation("Atualiza pessoas por id")
     @PutMapping(value="/{id}")
-    public ResponseEntity<Pessoa> update(@PathVariable Integer id, @RequestBody Pessoa newPessoa) {
+    public ResponseEntity<Pessoa> update(@PathVariable Integer id, @Validated @RequestBody Pessoa newPessoa) {
         return pessoaRepository.findById(id)
                 .map(pessoa -> {
                     pessoa.setNome(newPessoa.getNome());
