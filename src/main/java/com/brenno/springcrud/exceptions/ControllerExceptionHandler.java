@@ -16,7 +16,7 @@ public class ControllerExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> methodArgumentNotValidExcetionHandler(MethodArgumentNotValidException ex) {
-        List<String> details = ex.getBindingResult()
+        List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(error -> error.getObjectName()+ " : " +error.getDefaultMessage())
@@ -25,20 +25,20 @@ public class ControllerExceptionHandler {
         ApiError apiError = new ApiError(
                 HttpStatus.BAD_REQUEST.value(),
                 new Date(),
-                details);
+                errors);
 
         return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatusCode()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> globalExceptionHandler(Exception ex) {
-        List<String> details = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
         details.add(ex.getMessage());
 
         ApiError apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
-                details);
+                errors);
 
         return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatusCode()));
     }
