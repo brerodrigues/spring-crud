@@ -13,6 +13,22 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> methodArgumentNotValidExcetionHandler(MethodArgumentNotValidException ex) {
+        List<String> details = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getObjectName()+ " : " +error.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        ApiError apiError = new ApiError(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                details);
+
+        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatusCode()));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> globalExceptionHandler(Exception ex) {
