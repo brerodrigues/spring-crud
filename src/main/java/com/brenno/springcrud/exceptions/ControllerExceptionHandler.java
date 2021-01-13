@@ -33,7 +33,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> globalExceptionHandler(Exception ex) {
         List<String> errors = new ArrayList<>();
-        details.add(ex.getMessage());
+        errors.add(ex.getMessage());
 
         ApiError apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
