@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path="/pessoas")
 public class PessoaResource {
+    
+    // TODO criar um service para tirar essa bagunca do resource
 
     private PessoaRepository pessoaRepository;
 
