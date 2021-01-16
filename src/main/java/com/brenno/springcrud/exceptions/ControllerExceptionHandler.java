@@ -15,31 +15,43 @@ import java.util.stream.Collectors;
 public class ControllerExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> methodArgumentNotValidExcetionHandler(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiErrorException> methodArgumentNotValidExcetionHandler(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(error -> error.getObjectName()+ " : " +error.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        ApiError apiError = new ApiError(
+        ApiErrorException apiErrorException = new ApiErrorException(
                 HttpStatus.BAD_REQUEST.value(),
                 new Date(),
                 errors);
 
-        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatusCode()));
+        return new ResponseEntity<>(apiErrorException, HttpStatus.valueOf(apiErrorException.getStatusCode()));
+    }
+
+    @ExceptionHandler(PessoaException.class)
+    public ResponseEntity<ApiErrorException> PessoaExceptionExcetionHandler(PessoaException ex) {
+        List<String> errors = ex.getErrors();
+
+        ApiErrorException apiErrorException = new ApiErrorException(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                errors);
+
+        return new ResponseEntity<>(apiErrorException, HttpStatus.valueOf(apiErrorException.getStatusCode()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> globalExceptionHandler(Exception ex) {
+    public ResponseEntity<ApiErrorException> globalExceptionHandler(Exception ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
 
-        ApiError apiError = new ApiError(
+        ApiErrorException apiErrorException = new ApiErrorException(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 errors);
 
-        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatusCode()));
+        return new ResponseEntity<>(apiErrorException, HttpStatus.valueOf(apiErrorException.getStatusCode()));
     }
 }
