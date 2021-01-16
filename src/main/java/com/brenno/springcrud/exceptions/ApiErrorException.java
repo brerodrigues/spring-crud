@@ -3,12 +3,12 @@ package com.brenno.springcrud.exceptions;
 import java.util.Date;
 import java.util.List;
 
-public class ApiError {
+public class ApiErrorException {
     private int statusCode;
     private Date timestamp;
     private List errors;
 
-    public ApiError(int statusCode, Date timestamp, List errors) {
+    public ApiErrorException(int statusCode, Date timestamp, List errors) {
         this.statusCode = statusCode;
         this.timestamp = timestamp;
         this.errors = errors;
