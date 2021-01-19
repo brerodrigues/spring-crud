@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequestMapping(path="/pessoas")
 public class PessoaResource {
 
-    private PessoaService pessoaService;
+    private final PessoaService pessoaService;
 
     public PessoaResource(PessoaService pessoaService) {
         this.pessoaService = pessoaService;
