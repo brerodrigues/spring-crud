@@ -64,7 +64,7 @@ public class PessoaService {
             errors.add("Data de nascimento não pode ser maior que a data atual.");
         }
 
-        if (isCpfValido(pessoa.getCpf())) {
+        if (!isCpfValido(pessoa.getCpf())) {
             errors.add("CPF inválido.");
         }
 
